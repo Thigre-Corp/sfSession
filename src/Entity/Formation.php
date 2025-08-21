@@ -91,4 +91,9 @@ class Formation
 
         return $this;
     }
+// __toString()
+    public function __toString(): string 
+    {
+        return $this->getNom();
+    }
 }
