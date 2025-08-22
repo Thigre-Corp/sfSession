@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SessionController!{% endblock %}
+{% block title %}EDIT SessionController!{% endblock %}
 
 {% block body %}
 
 <div>
     <h1>Hello {{ controller_name }}!</h1>
     <div class="d-inline-flex p-2">
-        <h2 class="none">Modules de la session {{session}}</h2>
-        <a class="btn btn-success h2 m-2 px-1" href="{{ path('edit_session', {'id' : session.Id} ) }}">EDIT</a>
+        <h2 class="none">Edition des modules de la session {{session}}</h2>
+        <a class="btn btn-danger h2 m-2 px-1" href="{{ path('edit_session', {'id' : session.Id} ) }}">Supprimer toute la session !</a>
     </div>
 
     <ul>
@@ -16,6 +16,7 @@
             <li><b>{{module}}</b> - {{module.nombreJour}} jour(s) </li>
         {% endfor %}
     </ul>
+
     <h2>Stagiaires inscrits</h2>
     <ul>
         {% for stagiaire in session.stagiaires %}

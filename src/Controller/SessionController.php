@@ -20,11 +20,20 @@ final class SessionController extends AbstractController
         ]);
     }
 
+    #[Route('/session_edit&id={id}', name: 'edit_session')]
+    public function edit(Session $session) : Response
+    {
+        return $this->render('session/Edit.html.twig', [
+            'controller_name' => 'Edit - SessionController',
+            'session' => $session
+        ]);
+    }
+
     #[Route('/session&id={id}', name: 'show_session')]
     public function show(Session $session) : Response
     {
         return $this->render('session/show.html.twig', [
-            'controller_name' => 'Show - SessionController',
+            'controller_name' => 'show - SessionController',
             'session' => $session
         ]);
     }
