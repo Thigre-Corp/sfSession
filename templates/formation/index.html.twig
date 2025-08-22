@@ -5,13 +5,29 @@
 {% block body %}
 
 <div>
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello {{ controller_name }} / HomePage !</h1>
 
-    Test Liste Sessions:
-    <ul>
-        {% for row in formations %}
-            <li> {{row}} {{row.sessions}}  </li>
-        {% endfor %}
-    </ul>
+    <h2>Formations Proposées</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Descritptif
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in formations %}
+                <tr>
+                    <td><a href="{{ path('show_formation', {'id' : row.id} ) }}"> {{row}} </a></td>
+                    <td>{{row.descriptif}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

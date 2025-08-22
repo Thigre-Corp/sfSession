@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Hello {{ controller_name }}!</h1>
+
+    <h2>Sessions programmées pour la Formation {{formation}}</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Début
+                </th>
+                <th>
+                    Fin
+                </th>
+                <th>
+                    Stagiaires Inscrits
+                </th>
+                <th>
+                    Places Restantes
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in formation.sessions %}
+                <tr>
+                    <td>
+                        <a href="{{ path('show_session', {'id' : row.Id} ) }}">{{row}}</a>
+                    </td>
+                    <td>
+                        {{row.dateDebut | date("d/m/Y")}}
+                    </td>
+                    <td>
+                        {{row.dateFin | date("d/m/Y")}}
+                    </td>
+                    <td>
+                        {{row.NombrePlacesReservees}}
+                    </td>
+                    <td>
+                        {{row.NombrePlacesTotales - row.NombrePlacesReservees}}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

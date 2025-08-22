@@ -9,8 +9,8 @@
 
     Test Liste Stagiaires:
     <ul>
-        {% for row in stagiaires %}
-            <li> {{row}}   </li>
+        {% for stagiaire in stagiaires %}
+            <li><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></li>
         {% endfor %}
     </ul>
 </div>

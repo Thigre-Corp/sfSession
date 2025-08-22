@@ -159,6 +159,13 @@ class Stagiaire
         return $this;
     }
 
+    public function getAge(): ?string
+    {
+        $now = new \DateTime("now");
+
+        return  $now->diff($this->dateNaissance)->format('%y ans');
+    }
+
     /**
      * @return Collection<int, Session>
      */

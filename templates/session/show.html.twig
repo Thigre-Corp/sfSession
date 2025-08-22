@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Hello {{ controller_name }}!</h1>
+    <h2>Modules de la session {{session}}</h2>
+    <ul>
+        {% for module in session.programmes %}
+            <li><b>{{module}}</b> - {{module.nombreJour}} jour(s) </li>
+        {% endfor %}
+    </ul>
+    <h2>Stagiaires inscrits</h2>
+    <ul>
+        {% for stagiaire in session.stagiaires %}
+        <li><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}
