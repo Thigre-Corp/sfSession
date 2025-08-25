@@ -13,5 +13,8 @@
             <li><a href="{{ path('show_session', {'id' : row.Id}) }}"> {{row}}  </a></li>
         {% endfor %}
     </ul>
+    <div>
+            {{ form(formAddSession) }}
+    </div>
 </div>
 {% endblock %}
