@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Entity\Stagiaire;
 use App\Form\SessionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,12 +35,19 @@ final class SessionController extends AbstractController
             return $this->redirectToRoute('app_session');
         }
 
-        $sessions = $entityManager->getRepository(Session::class)->findAll();
+        $activeSessions = $entityManager->getRepository(Session::class)->findActiveSessions();
+        $pastSessions = $entityManager->getRepository(Session::class)->findPastSessions();
+        $futureSessions = $entityManager->getRepository(Session::class)->findFutureSessions();
+
+        $learnersNotInSession = $entityManager->getRepository(Stagiaire::class)->learnersNotInSession();
 
         return $this->render('session/index.html.twig', [
             'controller_name' => 'SessionController',
-            'sessions' => $sessions,
+            'activeSessions' => $activeSessions,
+            'lastSessions' =>$pastSessions,
+            'futureSessions' =>$futureSessions,
             'formAddSession' => $form,
+            'learnersNotInSession' =>$learnersNotInSession,
         ]);
     }
 
@@ -58,6 +66,8 @@ final class SessionController extends AbstractController
     #[Route('/session&id={id}', name: 'show_session')]
     public function show(Session $session) : Response
     {
+
+
         return $this->render('session/show.html.twig', [
             'controller_name' => 'show - SessionController',
             'session' => $session

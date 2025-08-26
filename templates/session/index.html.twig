@@ -7,14 +7,32 @@
 <div>
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    Test Liste Sessions:
+    Liste Sessions actives:
     <ul>
-        {% for row in sessions %}
-            <li><a href="{{ path('show_session', {'id' : row.Id}) }}"> {{row}}  </a></li>
+        {% for row in activeSessions %}
+            <li><a class="text-success" href="{{ path('show_session', {'id' : row.Id}) }}"> {{row}}  </a></li>
         {% endfor %}
     </ul>
-    <div>
-            {{ form(formAddSession) }}
-    </div>
+    Liste Sessions à venir:
+    <ul>
+        {% for row in futureSessions %}
+            <li><a class="text-primary" href="{{ path('show_session', {'id' : row.Id}) }}"> {{row}}  </a></li>
+        {% endfor %}
+    </ul>
+    Liste Sessions passées:
+    <ul>
+        {% for row in lastSessions %}
+            <li><a class="text-muted" href="{{ path('show_session', {'id' : row.Id}) }}"> {{row}}  </a></li>
+        {% endfor %}
+    </ul>
+    Liste Stagiaire non inscrit ds une session:
+    <ul>
+        {% for row in learnersNotInSession %}
+            <li><a class="text-muted" href=""> {{row}}  </a></li>
+        {% endfor %}
+    </ul>
 </div>
+
+
+
 {% endblock %}
