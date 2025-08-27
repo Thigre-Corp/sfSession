@@ -39,7 +39,6 @@ final class SessionController extends AbstractController
         $pastSessions = $entityManager->getRepository(Session::class)->findPastSessions();
         $futureSessions = $entityManager->getRepository(Session::class)->findFutureSessions();
 
-        $learnersNotInSession = $entityManager->getRepository(Stagiaire::class)->learnersNotInSession();
 
         return $this->render('session/index.html.twig', [
             'controller_name' => 'SessionController',
@@ -47,7 +46,6 @@ final class SessionController extends AbstractController
             'lastSessions' =>$pastSessions,
             'futureSessions' =>$futureSessions,
             'formAddSession' => $form,
-            'learnersNotInSession' =>$learnersNotInSession,
         ]);
     }
 
@@ -64,13 +62,16 @@ final class SessionController extends AbstractController
     }
 
     #[Route('/session&id={id}', name: 'show_session')]
-    public function show(Session $session) : Response
+    public function show(Session $session , EntityManagerInterface $entityManager) : Response
     {
+
+        $learnersNotInSession = $entityManager->getRepository(Stagiaire::class)->learnersNotInSession($session);
 
 
         return $this->render('session/show.html.twig', [
             'controller_name' => 'show - SessionController',
-            'session' => $session
+            'session' => $session,
+            'learnersNotInSession' =>$learnersNotInSession,
         ]);
     }
 }

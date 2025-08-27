@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Session;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -31,6 +30,7 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+        
     }
 
     /**

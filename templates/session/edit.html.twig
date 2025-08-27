@@ -17,12 +17,7 @@
         {% endfor %}
     </ul>
 
-    <h2>Stagiaires inscrits</h2>
-    <ul>
-        {% for stagiaire in session.stagiaires %}
-        <li><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></li>
-        {% endfor %}
-    </ul>
+
 
 </div>
 {% endblock %}

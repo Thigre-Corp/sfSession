@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Session;
 use App\Entity\Stagiaire;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Stagiaire>
@@ -20,13 +21,54 @@ class StagiaireRepository extends ServiceEntityRepository
     * @return Stagiaire[] Returns an array of Stagiaire objects not in the selected Session object
     */
 
-    public function learnersNotInSession()  :array
+    public function learnersNotInSession(Session $session)  :array
     {
+        //$id = $session->getId();
 
-        return [1,2]
-        ;
+        $queryBuilder = $this->createQueryBuilder();
+
+        $itsIn = $queryBuilder
+            ->select('stag')
+            ->from('Stagiaire', 'stag')
+            ->join()
+
+            ->andWhere('s.id = :valeur')
+            ->setParameter('valeur', $id)
+            ->orderBy('s.nom', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+           ;
+
+
+           $sub = $qb->select('arl')
+          ->from('$MineMyBundle:MineAssetRequestLine', 'arl')
+          ->where($qb->expr()->eq('arl.asset_id',1));
+
+$linked = $qb->select('rl')
+             ->from('MineMyBundle:MineRequestLine', 'rl')
+             ->where($qb->expr()->notIn('rl.request_id',  $sub->getDQL()))
+             ->getQuery()
+             ->getResult();
+        return $allInSession;
 
     }
+
+    // /**
+    // * @return Stagiaire[] Returns an array of Stagiaire objects
+    // */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
 /*
 selectionner tout les stagaiaires d'une sessions dont l'id est passé en parametre
 selectionner tt lesstagires qui ne sont PAS dans le resultat précédent

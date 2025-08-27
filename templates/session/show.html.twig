@@ -25,10 +25,9 @@
     
     <h2>Stagiaires non-inscrits</h2>
     <ul>
-        {% for stagiaire in session.stagiaires %}
+        {% for stagiaire in learnersNotInSession %}
         <li><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></li>
         {% endfor %}
     </ul>
-
 </div>
 {% endblock %}

@@ -25,12 +25,6 @@
             <li><a class="text-muted" href="{{ path('show_session', {'id' : row.Id}) }}"> {{row}}  </a></li>
         {% endfor %}
     </ul>
-    Liste Stagiaire non inscrit ds une session:
-    <ul>
-        {% for row in learnersNotInSession %}
-            <li><a class="text-muted" href=""> {{row}}  </a></li>
-        {% endfor %}
-    </ul>
 </div>
 
 
