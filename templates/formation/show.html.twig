@@ -27,6 +27,9 @@
                 <th>
                     Places Restantes
                 </th>
+                <th colspan="2">
+                    Administration
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -47,6 +50,17 @@
                     <td>
                         {{row.NombrePlacesTotales - row.NombrePlacesReservees}}
                     </td>
+                {% if auth %}
+                    <td>
+                        <button
+                            class="btn btn-warning js-open-modal"
+                            data-url="{{ path('formation_edit', {'id': row.id}) }}"
+                            data-title="Éditer une formation">
+                            Éditer
+                        </button>
+                    </td>
+                    <td><a href="{{ path('delete_formation', {'id': row.id}) }}" class="btn btn-danger">Supprimer</a></td>
+                {% endif %}
                 </tr>
             {% endfor %}
         </tbody>

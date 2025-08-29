@@ -89,7 +89,8 @@ final class FormationController extends AbstractController
     {
         return $this->render('formation/show.html.twig', [
             'controller_name' => 'Show - FormationController',
-            'formation' => $formation
+            'formation' => $formation,
+            'auth' => true,
         ]);
     }
 

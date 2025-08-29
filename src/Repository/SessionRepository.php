@@ -67,6 +67,40 @@ class SessionRepository extends ServiceEntityRepository
     }
 
 
+    public function learnersNotInSession(Session $session)  :array
+    {
+
+        $session_id = $session->getId();
+
+        $em = $this->getEntityManager();
+        
+        $qb = $em->createQueryBuilder(); // bingo!!!!
+     
+        
+        $qb->select('s')
+        ->from('App\Entity\Stagiaire', 's')
+        ->leftJoin('s.sessions', 'se')
+        ->where('se.id = :id');
+        
+        $sub= $em->createQueryBuilder();
+
+
+        $sub->select('st')
+            ->from('App\Entity\Stagiaire', 'st')
+            ->where($sub->expr()->notIn('st.id', $qb->getDQL()))
+            // Requête paramétrée
+            ->setParameter('id', $session_id)
+            // Trier la liste des stagiaires sur le nom de famille
+            ->orderBy('st.nom');
+
+        //$query = $sub->getQuery();
+
+       $query = $sub->getQuery();
+
+        //return $query->getResult(); // retourne erreur
+        return $query->getResult();
+    }
+
 
 
 

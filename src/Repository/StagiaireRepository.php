@@ -21,38 +21,33 @@ class StagiaireRepository extends ServiceEntityRepository
     * @return Stagiaire[] Returns an array of Stagiaire objects not in the selected Session object
     */
 
-    public function learnersNotInSession(Session $session)  :array
-    {
-        //$id = $session->getId();
+    // public function learnersNotInSession(Session $session)  :array
+    // {
+    //     $session_id = $session->getId();
 
-        $queryBuilder = $this->createQueryBuilder();
+    //     $em = $this->getEntityManager();
+    //     $sub = $em->createQueryBuilder();
 
-        $itsIn = $queryBuilder
-            ->select('stag')
-            ->from('Stagiaire', 'stag')
-            ->join()
+    //     $qb = $sub;
 
-            ->andWhere('s.id = :valeur')
-            ->setParameter('valeur', $id)
-            ->orderBy('s.nom', 'ASC')
-            //->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-           ;
+    //     $qb->select('s')
+    //         ->from('App\Entity\Stagiaire', 's')
+    //         ->leftJoin('s.sessions', 'se')
+    //         ->where('se.id = :id');
 
+    //     //var_dump($qb->getQuery());die;
 
-           $sub = $qb->select('arl')
-          ->from('$MineMyBundle:MineAssetRequestLine', 'arl')
-          ->where($qb->expr()->eq('arl.asset_id',1));
+    //     $sub->select('st')
+    //         ->from('App\Entity\Stagiaire', 'st')
+    //         ->where($sub->expr()->notIn('st.id', $qb->getDQL()))
+    //         ->setParameter('id', $session_id)
+    //         ->orderBy('st.nom');
 
-$linked = $qb->select('rl')
-             ->from('MineMyBundle:MineRequestLine', 'rl')
-             ->where($qb->expr()->notIn('rl.request_id',  $sub->getDQL()))
-             ->getQuery()
-             ->getResult();
-        return $allInSession;
+    //     $query = $sub->getQuery();
 
-    }
+    //     return $query->getResult();
+
+    // }
 
     // /**
     // * @return Stagiaire[] Returns an array of Stagiaire objects
