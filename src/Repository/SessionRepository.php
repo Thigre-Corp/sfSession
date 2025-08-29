@@ -44,7 +44,6 @@ class SessionRepository extends ServiceEntityRepository
             ->andWhere('s.dateFin >= :today')
             ->setParameter('today', $now)  //, Types::DATETIME_IMMUTABLE)
             ->orderBy('s.id', 'ASC')
-        //    ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
@@ -66,7 +65,9 @@ class SessionRepository extends ServiceEntityRepository
         ;
     }
 
-
+    /**
+    * @return Stagiaire[] Returns an array of Stagiaire objects
+    */
     public function learnersNotInSession(Session $session)  :array
     {
 
@@ -102,36 +103,35 @@ class SessionRepository extends ServiceEntityRepository
     }
 
 
+    /**
+    * @return Module[] Returns an array of module objects
+    */
+    public function modulesNotInSession($session)
+    {
+        $session_id = $session->getId();
 
+        $em = $this->getEntityManager();
 
+        $qb = $em->createQueryBuilder(); 
+        $qb->select('p')
+            ->from('App\Entity\Programme', 'p')
+            ->where('p.session = :id');
+                
+        $sub= $em->createQueryBuilder();
 
+        $sub->select('m')
+            ->from('App\Entity\Module', 'm')
+            ->where($sub->expr()->notIn('m.id', $qb->getDQL()))
+            ->setParameter('id', $session_id)
+            ->orderBy('m.nom');
 
-
-
-
-    //    /**
-    //  * @return Session[]
-    //  */
-    // public function findPastSessions(?\DateTimeImmutable $now = null): array
-    // {
-    //     // "Passée" = la session est complètement terminée : endAt < maintenant
-    //     $now ??= new \DateTimeImmutable('now'); // opérateur de coallescence d'affectation - si now is null, then now = 'now'
-    //     return $this->createQueryBuilder('s') 
-    //         ->andWhere('s.endAt < :now') // prédicat
-    //         ->setParameter('now', $now, Types::DATETIME_IMMUTABLE)
-    //         ->orderBy('s.endAt', 'DESC') // les plus récentes d'abord
-    //         ->getQuery()
-    //         ->getResult();
-    // }
-    
-    //    public function findOneBySomeField($value): ?Session
-    //    {
-        //        return $this->createQueryBuilder('s')
-        //            ->andWhere('s.exampleField = :val')
-        //            ->setParameter('val', $value)
-        //            ->getQuery()
-        //            ->getOneOrNullResult()
-        //        ;
-        //    }
-        
+        return $sub->getQuery()->getResult();
     }
+
+
+
+
+
+
+        
+}

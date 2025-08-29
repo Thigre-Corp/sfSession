@@ -6,28 +6,94 @@
 
 <div>
     <h1>Hello {{ controller_name }}!</h1>
-    <div class="d-inline-flex p-2">
-        <h2 class="none">Modules de la session {{session}}</h2>
-        <a class="btn btn-success h2 m-2 px-1" href="{{ path('edit_session', {'id' : session.Id} ) }}">EDIT</a>
-    </div>
 
-    <ul>
-        {% for module in session.programmes %}
-            <li><b>{{module}}</b> - {{module.nombreJour}} jour(s) </li>
+    <table class="table table-striped table-bordered mt-3">
+        <caption class="h2 text-center caption-top">
+            Modules de la session {{session}}
+        </caption>
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Module
+                </th>
+                <th class="w-25">
+                    Nb Jours
+                </th>
+                <th class="w-25">
+                    Administration
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for module in session.programmes %}
+            <tr>
+                <td><a href="">{{module}}</a></td>
+                <td>{{module.nombreJour}}</td>
+                <td><button class="btn btn-danger">RETIRER</button></td>
+            </tr>
+            {% endfor %}
+            <tr  class="table-primary">
+                    <td>
+                        <select name="add_module">
+                            {% for module in modulesNotInSession %}
+                            <option value="{{module}}">
+                                {{module}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input type="number"></input></td>
+                    <td><button class='btn btn-success'>AJOUTER</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered mt-3">
+        <caption class="h2 text-center caption-top">
+            Stagiaires inscrits
+        </caption>
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Nom - Prénom
+                </th>
+                <th class="w-25">
+                    Administration
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for stagiaire in session.stagiaires %}
+            <tr>
+                <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></td>
+                <td><button class="btn btn-danger">RETIRER</button></td>
+            </tr>
         {% endfor %}
-    </ul>
-    <h2>Stagiaires inscrits</h2>
-    <ul>
-        {% for stagiaire in session.stagiaires %}
-        <li><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></li>
+        </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered mt-3">
+        <caption class="h2 text-center caption-top">
+            Stagiaires non-inscrits
+        </caption>
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Nom - Prénom
+                </th>
+                <th class="w-25">
+                    Administration
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stagiaire in learnersNotInSession %}
+            <tr>
+                <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></td>
+                <td><button class="btn btn-success">AJOUTER</button></td>
+            </tr>
         {% endfor %}
-    </ul>
-    
-    <h2>Stagiaires non-inscrits</h2>
-    <ul>
-        {% for stagiaire in learnersNotInSession %}
-        <li><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></li>
-        {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 </div>
 {% endblock %}

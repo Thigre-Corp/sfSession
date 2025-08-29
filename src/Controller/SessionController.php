@@ -16,9 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class SessionController extends AbstractController
 {
-
-
-
     #[Route('/session', name: 'app_session')]
     public function index(EntityManagerInterface $entityManager,  Request $request): Response
     {
@@ -50,6 +47,28 @@ final class SessionController extends AbstractController
         ]);
     }
 
+    #[Route('/search?search={value}', name:'search')] // PB
+/*
+
+----------------------------------------------
+
+formBuilder ?? -> voir symfony ou recommandations symfonyCast
+pas une bonne idée de passer par un "formulaire perso". 
+Perte de l'intérêt du framework, surtout en terme de sécurité
+
+->DQL
+->resultat
+
+----------------------------------------------
+
+*/
+    public function search(String $value){
+
+        var_dump($value);die;
+
+        return 0 ;
+    }
+
 
 
 
@@ -67,12 +86,15 @@ final class SessionController extends AbstractController
     {
 
         $learnersNotInSession = $entityManager->getRepository(Session::class)->learnersNotInSession($session);
-
+        $modulesNotInSession = $entityManager->getRepository(Session::class)->modulesNotInSession($session);
 
         return $this->render('session/show.html.twig', [
             'controller_name' => 'show - SessionController',
             'session' => $session,
-            'learnersNotInSession' =>$learnersNotInSession,
+            'learnersNotInSession' => $learnersNotInSession,
+            'modulesNotInSession' => $modulesNotInSession,
         ]);
     }
+
+
 }
