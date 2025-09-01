@@ -27,9 +27,18 @@
                     </ul>
                 </div>
             </nav>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
         </header>
         <main>
-            {% block body %}{% endblock %}
+            <div class="container">
+                {% block body %}{% endblock %}
+            </div>
         </main>
         
         <footer class="fixed-bottom">

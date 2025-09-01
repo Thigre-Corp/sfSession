@@ -15,7 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class FormationController extends AbstractController
 {
 
+    #[Route ('/', name:'home')]
     #[Route('/formation', name: 'formation_index', methods: ['GET'])]
+    
     public function index(EntityManagerInterface $em): Response
     {
         return $this->render('formation/index.html.twig', [
@@ -84,7 +86,7 @@ final class FormationController extends AbstractController
         return $this->render('formation/edit.html.twig', ['form' => $form]);
     }
 
-    #[Route('/formation&id={id}', name: 'show_formation')]
+    #[Route('/formation/{id}', name: 'show_formation')]
     public function show(Formation $formation) : Response
     {
         return $this->render('formation/show.html.twig', [
@@ -94,7 +96,7 @@ final class FormationController extends AbstractController
         ]);
     }
 
-    #[Route('/formation/delete&id={id}', name: 'delete_formation')]
+    #[Route('/formation/delete/{id}', name: 'delete_formation')]
     public function delete(EntityManagerInterface $entityManager, Formation $formation) : Response
     {
         $entityManager->remove($formation);

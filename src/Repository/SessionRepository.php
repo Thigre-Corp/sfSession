@@ -102,7 +102,6 @@ class SessionRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-
     /**
     * @return Module[] Returns an array of module objects
     */
@@ -129,9 +128,21 @@ class SessionRepository extends ServiceEntityRepository
     }
 
 
+    public function foundSessions(Session $session)
+    {
+        $nomSearch= '%'.$session->getNom().'%';
+        //dd($nomSearch);
 
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('s')
+            ->from('App\Entity\Session', 's')
+            ->where('s.nom LIKE :nom')
+            ->setParameter('nom', $nomSearch)
+            ->orderBy('s.id');
 
-
-
-        
+        //dd($qb->getQuery());
+        return $qb->getQuery()->getResult();
+    }
+     
 }
