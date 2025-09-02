@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Session;
 use App\Entity\Stagiaire;
-use App\Form\SessionFormType;
+use App\Form\SessionType;
 use App\Form\SessionSearchType;
 use Symfony\Component\Form\FormView;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,7 +46,7 @@ final class SessionController extends AbstractController
         //formulaire création de session
         $session = new Session();
 
-        $form = $this->createForm(SessionFormType::class, $session);
+        $form = $this->createForm(SessionType::class, $session);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,13 +76,49 @@ final class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/session/{id}/edit', name: 'edit_session')]
-    public function edit(Session $session) : Response
+    #[Route('/session/new', name: 'session_new')]
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
-        return $this->render('session/Edit.html.twig', [
-            'controller_name' => 'Edit - SessionController',
-            'session' => $session
-        ]);
+        $session = new Session();
+    
+        $createForm = $this->createForm(SessionType::class, $session);
+
+        $createForm->handleRequest($request);
+    
+        if ($createForm->isSubmitted() && $createForm->isValid()) {
+            $em->persist($session);
+            $em->flush();
+            return $this->redirectToRoute('app_session');
+        }
+    
+        return $this->render('session/new.html.twig', [
+                'title' => 'Ajouter une Session',
+                'createForm' => $createForm->createView(),
+                'auth' => true ,
+            ]);
+    }
+
+
+
+    #[Route('/session/{id}/edit', name: 'edit_session')]
+    public function edit(Session $session, Request $request, EntityManagerInterface $em): Response
+    {
+    
+        $editForm = $this->createForm(SessionType::class, $session);
+
+        $editForm->handleRequest($request);
+    
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em->persist($session);
+            $em->flush();
+            return $this->redirectToRoute('app_session');
+        }
+    
+        return $this->render('session/edit.html.twig', [
+                'title' => 'Ajouter une Session',
+                'editForm' => $editForm->createView(),
+                'auth' => true ,
+            ]);
     }
 
     #[Route('/session/{id}/delete', name: 'delete_session')]
@@ -114,4 +150,5 @@ final class SessionController extends AbstractController
             'modulesNotInSession' => $modulesNotInSession
         ]);
     }
+
 }

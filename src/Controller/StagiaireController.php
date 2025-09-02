@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Stagiaire;
+use App\Form\StagiaireType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,17 +20,82 @@ final class StagiaireController extends AbstractController
        // $stagiaires->findAll();
         return $this->render('stagiaire/index.html.twig', [
             'controller_name' => 'StagiaireController',
-            'stagiaires' => $stagiaires
+            'stagiaires' => $stagiaires,
+            'auth'=>true,
         ]);
     }
 
-    #[Route('/stagiaire&id={id}', name:"show_stagiaire")]
+
+    #[Route('/stagiaire/new', name: 'stagiaire_new')]
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+        $stagiaire = new Stagiaire();
+    
+        $createForm = $this->createForm(StagiaireType::class, $stagiaire);
+
+        $createForm->handleRequest($request);
+    
+        if ($createForm->isSubmitted() && $createForm->isValid()) {
+            $em->persist($stagiaire);
+            $em->flush();
+            return $this->redirectToRoute('app_stagiaire');
+        }
+    
+        return $this->render('stagiaire/new.html.twig', [
+                'title' => 'Ajouter un stagiaire',
+                'createForm' => $createForm->createView(),
+                'auth' => true ,
+            ]);
+    }
+
+
+
+    #[Route('/stagiaire/{id}/edit', name: 'edit_stagiaire')]
+    public function edit(Stagiaire $stagiaire, Request $request, EntityManagerInterface $em): Response
+    {
+    
+        $editForm = $this->createForm(StagiaireType::class, $stagiaire);
+
+        $editForm->handleRequest($request);
+    
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em->persist($stagiaire);
+            $em->flush();
+            return $this->redirectToRoute('app_stagiaire');
+        }
+    
+        return $this->render('stagiaire/edit.html.twig', [
+                'title' => 'Editer un stagiaire',
+                'editForm' => $editForm->createView(),
+                'auth' => true ,
+            ]);
+    }
+
+    #[Route('/stagiaire/{id}/delete', name: 'delete_stagiaire')]
+    public function delete(EntityManagerInterface $entityManager, Stagiaire $stagiaire) : Response
+    {
+        $nom = $stagiaire->getNom();
+        $entityManager->remove($stagiaire);
+        $entityManager->flush();
+
+        $this->addFlash(
+                    'warning',
+                    $nom.' supprimé'
+                );
+
+        return $this->redirectToRoute('app_stagiaire');
+    }
+
+
+    #[Route('/tagiaire/{id}/show', name: 'show_stagiaire')]
     public function show(Stagiaire $stagiaire) : Response
     {
-        
+
         return $this->render('stagiaire/show.html.twig', [
             'controller_name' => 'Show - StagiaireController',
-            'stagiaire' => $stagiaire
+            'stagiaire' => $stagiaire,
+            'auth' => true,
         ]);
     }
+
 }

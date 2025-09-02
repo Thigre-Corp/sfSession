@@ -1,14 +1,13 @@
-{# templates/formation/eidt.html.twig #}
+{# templates/formation/index.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Editer Session{% endblock %}
+{% block title %}Ajouter Session{% endblock %}
  
 {% block body %}
 <h2>{{title}}</h2>
  
 {% if auth %}
 
-{{form(editForm)}}
+{{form(createForm)}}
 
 
 {% endif %}

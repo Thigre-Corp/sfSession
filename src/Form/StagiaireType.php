@@ -2,12 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Session;
 use App\Entity\Stagiaire;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class StagiaireType extends AbstractType
 {
@@ -22,10 +22,8 @@ class StagiaireType extends AbstractType
             ->add('telephone')
             ->add('email')
             ->add('photo')
-            ->add('sessions', EntityType::class, [
-                'class' => Session::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+            ->add('Valider', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-success']
             ])
         ;
     }

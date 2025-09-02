@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class SessionFormType extends AbstractType
+class SessionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,7 +30,7 @@ class SessionFormType extends AbstractType
                 'class' => Formation::class,
                 'choice_label' => 'nom',
             ])
-            ->add('Ajouter', SubmitType::class, [
+            ->add('Valider', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-success']
             ])
         ;
