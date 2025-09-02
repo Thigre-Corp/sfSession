@@ -25,25 +25,25 @@
             </tr>
         </thead>
         <tbody>
-            {% for module in session.programmes %}
+            {% for programme in session.programmes %}
             <tr>
-                <td><a href="">{{module}}</a></td>
-                <td>{{module.nombreJour}}</td>
-                <td><button class="btn btn-danger">RETIRER</button></td>
+                <td><a href="">{{programme}}</a></td>
+                <td>{{programme.nombreJour}}</td>
+                <td><a href="{{ path('removeProgramme_session', {'id': session.id, 'prog_id': programme.id} ) }}" class="btn  btn-danger">RETIRER</a></td>
             </tr>
             {% endfor %}
             <tr  class="table-primary">
+                    {{form_start(form)}}
                     <td>
-                        <select name="add_module">
-                            {% for module in modulesNotInSession %}
-                            <option value="{{module}}">
-                                {{module}}
-                            </option>
-                            {% endfor %}
-                        </select>
+                        {{form_widget(form.module)}}
                     </td>
-                    <td><input type="number"></input></td>
-                    <td><button class='btn btn-success'>AJOUTER</button></td>
+                    <td>
+                        {{form_widget(form.nombreJour)}}
+                    </td>
+                    <td>
+                        {{form_widget(form.submit, {'label' : 'AJOUTER'})}}
+                    </td>
+                    {{form_end(form)}}
             </tr>
         </tbody>
     </table>
@@ -66,7 +66,7 @@
              {% for stagiaire in session.stagiaires %}
             <tr>
                 <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></td>
-                <td><button class="btn btn-danger">RETIRER</button></td>
+                <td><a href="{{ path('removeStagiaire_session', {'id': session.id, 'stag_id': stagiaire.id} ) }}" class="btn  btn-danger">RETIRER</a></td>
             </tr>
         {% endfor %}
         </tbody>
@@ -89,8 +89,8 @@
         <tbody>
             {% for stagiaire in learnersNotInSession %}
             <tr>
-                <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></td>
-                <td><button class="btn btn-success">AJOUTER</button></td>
+                <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.id} ) }}">{{stagiaire}}</a></td>
+                <td><a href="{{ path('addStagiaire_session', {'id': session.id, 'stag_id': stagiaire.id} ) }}" class="btn btn-success">AJOUTER</a></td>
             </tr>
         {% endfor %}
         </tbody>

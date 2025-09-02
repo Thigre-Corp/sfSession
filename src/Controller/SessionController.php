@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Entity\Programme;
 use App\Entity\Stagiaire;
 use App\Form\SessionType;
+use App\Form\ProgrammeType;
 use App\Form\SessionSearchType;
 use Symfony\Component\Form\FormView;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -98,8 +101,6 @@ final class SessionController extends AbstractController
             ]);
     }
 
-
-
     #[Route('/session/{id}/edit', name: 'edit_session')]
     public function edit(Session $session, Request $request, EntityManagerInterface $em): Response
     {
@@ -135,20 +136,83 @@ final class SessionController extends AbstractController
 
         return $this->redirectToRoute('app_session');
     }
+    
+    #[Route('/session/{id}/addStagiaire/{stag_id}', name: 'addStagiaire_session')]
+    public function addStagiaire(EntityManagerInterface $em, Session $session,int $stag_id)
+    {
+        $stagiaire = $em->getRepository(Stagiaire::class)->find($stag_id);
+        $session->addStagiaire($stagiaire);
+
+        $em->persist($session);
+        $em->flush();
+
+        return $this->redirectToRoute('show_session',
+           ['id' => $session->getId() ] 
+        );
+    }
+    
+    #[Route('/session/{id}/removeStagiaire/{stag_id}', name: 'removeStagiaire_session')]
+    public function removeStagiaire(EntityManagerInterface $em, Session $session,int $stag_id)
+    {
+        $stagiaire = $em->getRepository(Stagiaire::class)->find($stag_id);
+        $session->removeStagiaire($stagiaire);
+
+        $em->persist($session);
+        $em->flush();
+
+        return $this->redirectToRoute('show_session',
+           ['id' => $session->getId() ] 
+        );
+    }
+
+    #[Route('/session/{id}/removeProgramme/{prog_id}', name: 'removeProgramme_session')]
+    public function removeProgramme(EntityManagerInterface $em, Session $session,int $prog_id)
+    {
+        $programme = $em->getRepository(Programme::class)->find($prog_id);
+        $session->removeProgramme($programme);
+
+        $em->persist($session);
+        $em->flush();
+
+        return $this->redirectToRoute('show_session',
+           ['id' => $session->getId() ] 
+        );
+    }
 
     #[Route('/session/{id}', name: 'show_session')]
-    public function show(Request $request, Session $session , EntityManagerInterface $entityManager) : Response
+    public function show(Session $session , EntityManagerInterface $em, Request $request) : Response
     {
 
-        $learnersNotInSession = $entityManager->getRepository(Session::class)->learnersNotInSession($session);
-        $modulesNotInSession = $entityManager->getRepository(Session::class)->modulesNotInSession($session);
+        $modulesNotInSession = $em->getRepository(Session::class)->modulesNotInSession($session);
 
+        $programme= new Programme;
+        $programme->setSession($session);
+        $addForm = $this->createForm(ProgrammeType::class, $programme); /*, [
+            'data' => [
+                $modulesNotInSession
+            ]
+        ]);*/
+
+        $addForm->handleRequest($request);
+    
+        if ($addForm->isSubmitted() && $addForm->isValid()) {
+            $em->persist($programme);
+            $em->flush();
+            return $this->redirectToRoute('show_session',
+                ['id' => $session->getId() ] 
+                );
+        }
+
+
+        $learnersNotInSession = $em->getRepository(Session::class)->learnersNotInSession($session);
+        
         return $this->render('session/show.html.twig', [
             'controller_name' => 'show - SessionController',
             'session' => $session,
             'learnersNotInSession' => $learnersNotInSession,
-            'modulesNotInSession' => $modulesNotInSession
+            'form' => $addForm,
         ]);
     }
+
 
 }
