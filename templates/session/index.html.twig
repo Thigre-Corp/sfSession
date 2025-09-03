@@ -50,7 +50,7 @@
                         {{row.nombrePlacesReservees}}
                     </td>
                     <td>
-                        {{row.nombrePlacesTotales - row.nombrePlacesReservees}}
+                        {{row.nombrePlacesTotales - ( row.nombrePlacesReservees + row.StagiairesNumber )}}
                     </td>
                 {% if auth %}
                     <td><a href="{{ path('edit_session', {'id': row.id}) }}" class="btn btn-warning" >Éditer</a></td>
