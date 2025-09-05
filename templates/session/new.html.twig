@@ -7,8 +7,12 @@
  
 {% if auth %}
 
-{{form(createForm)}}
+{{form_start(createForm)}}
 
+<div class="bg-warning">
+{{form_errors(createForm) }} 
+</div>
+{{form_end(createForm)}}
 
 {% endif %}
 

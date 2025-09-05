@@ -105,7 +105,8 @@ final class SessionController extends AbstractController
     public function edit(Session $session, Request $request, EntityManagerInterface $em): Response
     {
     
-        $editForm = $this->createForm(SessionType::class, $session);
+        $stagiairesEnregistres = count($session->getStagiaires());
+        $editForm = $this->createForm(SessionType::class, $session, ["stagiairesEnregistres" => $stagiairesEnregistres]);
 
         $editForm->handleRequest($request);
     
@@ -201,6 +202,9 @@ final class SessionController extends AbstractController
             return $this->redirectToRoute('show_session',
                 ['id' => $session->getId() ] 
                 );
+        }
+        if ($addForm->isSubmitted( ) && !$addForm->isValid()) {
+            dd($addForm);
         }
 
 

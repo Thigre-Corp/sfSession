@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: SessionRepository::class)]
 class Session
 {
@@ -23,12 +25,20 @@ class Session
     private ?\DateTime $dateDebut = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(
+        propertyPath: 'dateDebut',
+        message : 'Merci de vérifier les dates de début et de fin de session !',
+        )]
     private ?\DateTime $dateFin = null;
 
     #[ORM\Column]
     private ?int $nombrePlacesTotales = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\LessThanOrEqual(
+        propertyPath: 'nombrePlacesTotales',
+        message: 'On ne peut pas réserver plus de place que de disponibles !',
+    )]
     private ?int $nombrePlacesReservees = null;
 
     /**

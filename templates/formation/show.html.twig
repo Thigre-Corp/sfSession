@@ -46,11 +46,12 @@
                     <td>
                         {{row.dateFin | date("d/m/Y")}}
                     </td>
-                    <td>
-                        {{row.NombrePlacesReservees}}
-                    </td>
+                    <!-- ATTENTION -->
                     <td>
                         {{row.NombrePlacesTotales - row.NombrePlacesReservees}}
+                    </td>
+                    <td>
+                        {{row.NombrePlacesReservees}}
                     </td>
                 {% if auth %}
                     <td>
