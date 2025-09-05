@@ -135,6 +135,11 @@ class Session
         return $this->stagiaires;
     }
 
+    public function getStagiairesNumber(): int
+    {
+        return count($this->stagiaires);
+    }
+
     public function addStagiaire(Stagiaire $stagiaire): static
     {
         if (!$this->stagiaires->contains($stagiaire)) {
@@ -159,7 +164,6 @@ class Session
     public function setFormation(?Formation $formation): static
     {
         $this->formation = $formation;
-
         return $this;
     }
 

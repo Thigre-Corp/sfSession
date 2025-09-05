@@ -19,9 +19,11 @@
                 <th class="w-25">
                     Nb Jours
                 </th>
+            {% if auth %}
                 <th class="w-25">
                     Administration
                 </th>
+            {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -29,9 +31,12 @@
             <tr>
                 <td><a href="">{{programme}}</a></td>
                 <td>{{programme.nombreJour}}</td>
+            {% if auth %}
                 <td><a href="{{ path('removeProgramme_session', {'id': session.id, 'prog_id': programme.id} ) }}" class="btn  btn-danger">RETIRER</a></td>
+            {% endif %}
             </tr>
             {% endfor %}
+            {% if auth %}
             <tr  class="table-primary">
                     {{form_start(form)}}
                     <td>
@@ -45,6 +50,7 @@
                     </td>
                     {{form_end(form)}}
             </tr>
+            {% endif %}
         </tbody>
     </table>
 
@@ -57,20 +63,26 @@
                 <th>
                     Nom - Prénom
                 </th>
+                {% if auth %}
                 <th class="w-25">
                     Administration
                 </th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
              {% for stagiaire in session.stagiaires %}
             <tr>
                 <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.Id} ) }}">{{stagiaire}}</a></td>
-                <td><a href="{{ path('removeStagiaire_session', {'id': session.id, 'stag_id': stagiaire.id} ) }}" class="btn  btn-danger">RETIRER</a></td>
+                {% if auth %}
+                <td><a href="{{ path('removeStagiaire_session', {'id': session.id, 'stag_id': stagiaire.id} ) }}" class="btn  btn-danger">RETIRER</a></td>    
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
+{% if auth %}
+    
 
     <table class="table table-striped table-bordered mt-3">
         <caption class="h2 text-center caption-top">
@@ -90,10 +102,15 @@
             {% for stagiaire in learnersNotInSession %}
             <tr>
                 <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.id} ) }}">{{stagiaire}}</a></td>
-                <td><a href="{{ path('addStagiaire_session', {'id': session.id, 'stag_id': stagiaire.id} ) }}" class="btn btn-success">AJOUTER</a></td>
+                {% if (session.nombrePlacesTotales -  (session.nombrePlacesReservees + session.StagiairesNumber)) > 0 %}
+                    <td><a href="{{ path('addStagiaire_session', {'id': session.id, 'stag_id': stagiaire.id} ) }}" class="btn btn-success">AJOUTER</a></td>
+                {% else %}
+                    <td><p class="btn btn-dark">SESSION PLEINE</p></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
+{% endif %}
 </div>
 {% endblock %}

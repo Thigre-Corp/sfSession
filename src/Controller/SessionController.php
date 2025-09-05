@@ -188,12 +188,13 @@ final class SessionController extends AbstractController
 
         $programme= new Programme;
         $programme->setSession($session);
-        $addForm = $this->createForm(ProgrammeType::class, $programme); /*, [
-            'data' => [
-                $modulesNotInSession
-            ]
-        ]);*/
 
+        //on passe la session au form via une option custom
+
+        $addForm = $this->createForm(ProgrammeType::class, $programme, [
+            'session' => $session          
+        ]);   
+        
         $addForm->handleRequest($request);
     
         if ($addForm->isSubmitted() && $addForm->isValid()) {
@@ -207,16 +208,14 @@ final class SessionController extends AbstractController
             dd($addForm);
         }
 
-
         $learnersNotInSession = $em->getRepository(Session::class)->learnersNotInSession($session);
         
         return $this->render('session/show.html.twig', [
             'controller_name' => 'show - SessionController',
             'session' => $session,
             'learnersNotInSession' => $learnersNotInSession,
-            'form' => $addForm,
+            'form' => $addForm->createView(),
+            'auth' => true,
         ]);
     }
-
-
 }
