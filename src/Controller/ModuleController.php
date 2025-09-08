@@ -6,6 +6,7 @@ use App\Entity\Module;
 use App\Form\ModuleType;
 use Symfony\Component\Form\FormView;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,15 +18,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class ModuleController extends AbstractController
 {
     #[Route('/module', name: 'app_module')]
-    public function index(EntityManagerInterface $entityManager,  Request $request): Response
+    public function index(EntityManagerInterface $entityManager,  PaginatorInterface $paginator , Request $request): Response
     {
 
         //récupération des modules
         $modules = $entityManager->getRepository(Module::class)->findAll();
 
+        $queryBuilder = $entityManager->getRepository(Module::class)->qbAllModules();
+
+        $pagination = $paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/
+        );
+
+
         return $this->render('module/index.html.twig', [
             'controller_name' => 'moduleController',
-            'modules' => $modules,
+            'modules' => $pagination,
             'auth' => true ,
         ]);
     }
