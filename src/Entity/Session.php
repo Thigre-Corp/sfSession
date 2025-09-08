@@ -197,6 +197,15 @@ class Session
         return $this;
     }
 
+    public function nDaysProgrammed(): int 
+    {
+        $nDays = 0;
+        foreach ($this->programmes as $programme) {
+            $nDays += $programme->getNombreJour();
+        }
+        return $nDays;
+    }
+
 // __toString()
     public function __toString(): string 
     {

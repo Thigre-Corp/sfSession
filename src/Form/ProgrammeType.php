@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
 
 class ProgrammeType extends AbstractType
@@ -22,17 +23,19 @@ class ProgrammeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var \App\Entity\Session | null $session */
-        $session = ($options['session']);
+        $session = $options['session'];
+        $businessDaysLeft = $options['businessDaysLeft'];
 
         $builder
             ->add('nombreJour', IntegerType::class,[
                 'constraints' => [
                     new NotBlank(),
                     new Positive,
+                   // new LessThanOrEqual($businessDaysLeft),
                 ],
                 'attr' =>[
                     'min' =>'1',
-                    'max' =>'99',
+                    'max' => $businessDaysLeft ,
                     'value' => '1',
                 ]
             ]
@@ -71,5 +74,7 @@ class ProgrammeType extends AbstractType
             // On déclare l’option custom "session"
             $resolver->setDefined('session');
             $resolver->setAllowedTypes('session', ['null', \App\Entity\Session::class]);
+            $resolver->setDefined('businessDaysLeft');
+            $resolver->setAllowedTypes('businessDaysLeft', ['null', 'int']);
         }
 }

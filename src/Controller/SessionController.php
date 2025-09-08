@@ -1,25 +1,19 @@
-<?
+<?php
+
+namespace App\Controller;
+
 /*
 
 continuer les recherches avec Carbon date/ business holidays fr national.
 
 
-
-
-
-
-
-
 */
-?>
 
-
-
-<?php
-
-namespace App\Controller;
+use Carbon\Carbon;
+use Cmixin\BusinessDay;
 
 use App\Entity\Session;
+
 use App\Entity\Programme;
 use App\Entity\Stagiaire;
 use App\Form\SessionType;
@@ -30,10 +24,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+BusinessDay::enable(            // peut-être plus pértinent dans entité session ????
+    [
+        'Carbon\Carbon',
+        'Carbon\CarbonImmutable',
+    ],
+    'fr-east');
 
 
 final class SessionController extends AbstractController
@@ -42,6 +42,8 @@ final class SessionController extends AbstractController
     public function index(EntityManagerInterface $entityManager,  Request $request): Response
     {
         
+        //dd(Carbon::parse('2025-12-22')->diffInBusinessDays(Carbon::parse('2025-12-26')->endOfDay()));
+
         //formulaire recherche de session par le nom
         $searchSession = new Session();
  
@@ -134,7 +136,7 @@ final class SessionController extends AbstractController
         }
     
         return $this->render('session/edit.html.twig', [
-                'title' => 'Ajouter une Session',
+                'title' => 'Editer une Session',
                 'editForm' => $editForm->createView(),
                 'auth' => true ,
             ]);
@@ -206,10 +208,18 @@ final class SessionController extends AbstractController
         $programme= new Programme;
         $programme->setSession($session);
 
+        $carbonDebut = new Carbon($session->getDateDebut());
+        $carbonFin = new Carbon($session->getDateFin());
+
+        $businessDays = $carbonDebut->diffInBusinessDays($carbonFin->endOfDay());
+        $businessDaysLeft = $businessDays- $session->nDaysProgrammed();
+        
+
         //on passe la session au form via une option custom
 
         $addForm = $this->createForm(ProgrammeType::class, $programme, [
-            'session' => $session          
+            'session' => $session,
+            'businessDaysLeft' => $businessDaysLeft,           
         ]);   
         
         $addForm->handleRequest($request);
@@ -221,18 +231,24 @@ final class SessionController extends AbstractController
                 ['id' => $session->getId() ] 
                 );
         }
+        
         if ($addForm->isSubmitted( ) && !$addForm->isValid()) {
+            dump('oups');
             dd($addForm);
+            //c'est là qu'on bascule les erreurs de formulaires en FlashMessage...
         }
 
         $learnersNotInSession = $em->getRepository(Session::class)->learnersNotInSession($session);
-        
+
+
         return $this->render('session/show.html.twig', [
             'controller_name' => 'show - SessionController',
             'session' => $session,
             'learnersNotInSession' => $learnersNotInSession,
             'form' => $addForm->createView(),
             'auth' => true,
+            'businessDays' => $businessDays,
+            'businessDaysLeft' => $businessDaysLeft,
         ]);
     }
 }
