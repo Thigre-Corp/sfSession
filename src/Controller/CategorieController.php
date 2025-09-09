@@ -26,7 +26,7 @@ final class CategorieController extends AbstractController
         return $this->render('categorie/index.html.twig', [
             'controller_name' => 'CategorieController',
             'categories' => $categories,
-            'auth' => true ,
+            'auth' => $this->isGranted('ROLE_USER') ,
         ]);
     }
 
@@ -48,7 +48,7 @@ final class CategorieController extends AbstractController
         return $this->render('categorie/new.html.twig', [
                 'title' => 'Ajouter une categorie',
                 'createForm' => $createForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 
@@ -71,7 +71,7 @@ final class CategorieController extends AbstractController
         return $this->render('categorie/edit.html.twig', [
                 'title' => 'Editer une categorie',
                 'editForm' => $editForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 

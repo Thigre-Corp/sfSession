@@ -26,6 +26,13 @@
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_module') }}">Modules</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_categorie') }}">Catégories</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_stagiaire') }}">Stagiaires</a></li>
+
+                    {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">LogOut [{{app.user.username}}]</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">LogIn</a></li>
+                    {% endif %}
+
                     </ul>
                 </div>
             </nav>

@@ -20,10 +20,11 @@ final class FormationController extends AbstractController
     
     public function index(EntityManagerInterface $em): Response
     {
+
         return $this->render('formation/index.html.twig', [
             'controller_name' => 'FormationController',
             'formations' => $em->getRepository(Formation::class)->findAll(),
-            'auth' => true,
+            'auth' => $this->isGranted('ROLE_USER'),
         ]);
     }
     
@@ -56,7 +57,7 @@ final class FormationController extends AbstractController
         // Fallback (peu utilisé ici)
         return $this->render('formation/new.html.twig',
          ['form' => $form ,
-          'auth' => true,
+          'auth' => $this->isGranted('ROLE_USER'),
           'formations' => null
         ]);
     }
@@ -92,7 +93,7 @@ final class FormationController extends AbstractController
         return $this->render('formation/show.html.twig', [
             'controller_name' => 'Show - FormationController',
             'formation' => $formation,
-            'auth' => true,
+            'auth' => $this->isGranted('ROLE_USER'),
         ]);
     }
 

@@ -36,7 +36,7 @@ final class ModuleController extends AbstractController
         return $this->render('module/index.html.twig', [
             'controller_name' => 'moduleController',
             'modules' => $pagination,
-            'auth' => true ,
+            'auth' => $this->isGranted('ROLE_USER') ,
         ]);
     }
 
@@ -58,7 +58,7 @@ final class ModuleController extends AbstractController
         return $this->render('module/new.html.twig', [
                 'title' => 'Ajouter un module',
                 'createForm' => $createForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 
@@ -81,7 +81,7 @@ final class ModuleController extends AbstractController
         return $this->render('module/edit.html.twig', [
                 'title' => 'Editer un module',
                 'editForm' => $editForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 

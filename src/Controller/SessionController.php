@@ -93,7 +93,7 @@ final class SessionController extends AbstractController
             'futureSessions' =>$futureSessions,
             'formAddSession' => $form,
             'form' => $formSearch->createView(),
-            'auth' => true ,
+            'auth' => $this->isGranted('ROLE_USER') ,
             'foundSessions' => $foundSessions ?? null,
         ]);
     }
@@ -116,7 +116,7 @@ final class SessionController extends AbstractController
         return $this->render('session/new.html.twig', [
                 'title' => 'Ajouter une Session',
                 'createForm' => $createForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 
@@ -138,7 +138,7 @@ final class SessionController extends AbstractController
         return $this->render('session/edit.html.twig', [
                 'title' => 'Editer une Session',
                 'editForm' => $editForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 
@@ -246,7 +246,7 @@ final class SessionController extends AbstractController
             'session' => $session,
             'learnersNotInSession' => $learnersNotInSession,
             'form' => $addForm->createView(),
-            'auth' => true,
+            'auth' => $this->isGranted('ROLE_USER'),
             'businessDays' => $businessDays,
             'businessDaysLeft' => $businessDaysLeft,
         ]);

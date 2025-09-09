@@ -30,7 +30,7 @@ final class StagiaireController extends AbstractController
         return $this->render('stagiaire/index.html.twig', [
             'controller_name' => 'StagiaireController',
             'pagination' => $pagination,
-            'auth'=>true,
+            'auth' => $this->isGranted('ROLE_USER'),
         ]);
     }
 
@@ -53,7 +53,7 @@ final class StagiaireController extends AbstractController
         return $this->render('stagiaire/new.html.twig', [
                 'title' => 'Ajouter un stagiaire',
                 'createForm' => $createForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 
@@ -76,7 +76,7 @@ final class StagiaireController extends AbstractController
         return $this->render('stagiaire/edit.html.twig', [
                 'title' => 'Editer un stagiaire',
                 'editForm' => $editForm->createView(),
-                'auth' => true ,
+                'auth' => $this->isGranted('ROLE_USER') ,
             ]);
     }
 
@@ -103,7 +103,7 @@ final class StagiaireController extends AbstractController
         return $this->render('stagiaire/show.html.twig', [
             'controller_name' => 'Show - StagiaireController',
             'stagiaire' => $stagiaire,
-            'auth' => true,
+            'auth' => $this->isGranted('ROLE_USER'),
         ]);
     }
 
