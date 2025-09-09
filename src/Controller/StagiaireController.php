@@ -96,7 +96,7 @@ final class StagiaireController extends AbstractController
     }
 
 
-    #[Route('/tagiaire/{id}/show', name: 'show_stagiaire')]
+    #[Route('/stagiaire/{id}/show', name: 'show_stagiaire')]
     public function show(Stagiaire $stagiaire) : Response
     {
 

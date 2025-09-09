@@ -66,6 +66,9 @@
             Stagiaires inscrits - {{session.StagiairesNumber}} Pl.<br>
             Réservations - {{session.nombrePlacesReservees}} Pl.
         </caption>
+{% if is_granted('ROLE_USER') %}
+                
+
         <thead class="table-dark">
             <tr>
                 <th>
@@ -88,6 +91,7 @@
             </tr>
         {% endfor %}
         </tbody>
+{% endif %}
     </table>
 {% if auth %}
     
@@ -106,7 +110,10 @@
                 </th>
             </tr>
         </thead>
+{% if is_granted('ROLE_USER') %}
         <tbody>
+                
+
             {% for stagiaire in learnersNotInSession %}
             <tr>
                 <td><a href="{{ path('show_stagiaire', {'id' : stagiaire.id} ) }}">{{stagiaire}}</a></td>
@@ -118,6 +125,7 @@
             </tr>
         {% endfor %}
         </tbody>
+{% endif %}
     </table>
 {% endif %}
 </div>
