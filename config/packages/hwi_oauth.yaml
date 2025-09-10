@@ -1,0 +1,9 @@
+hwi_oauth:
+    firewall_names: [main]
+    # https://github.com/hwi/HWIOAuthBundle/blob/master/docs/2-configuring_resource_owners.md
+    resource_owners:
+        google:
+            type:                google
+            client_id:           203327411458-c37nhh0q28bcf1plooa97rajrskhoaq1.apps.googleusercontent.com #'%env(GOOGLE_CLIENT_ID)'
+            client_secret:       '%env(GOOGLE_CLIENT_SECRET)%'
+            scope:               "email profile"

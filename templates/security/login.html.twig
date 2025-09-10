@@ -35,8 +35,19 @@
             <button class="btn btn-lg btn-primary" type="submit">
                 Sign in
             </button>
-    
             <a class="btn btn-lg btn-warning mx-5" href="{{path('app_register')}}">Register</a>
+
         </form>
+            {% for owner in hwi_oauth_resource_owners() %}
+                <a class="btn btn-success" href="{{ hwi_oauth_login_url(owner) }}">Connect with {{ owner | trans({}, 'HWIOAuthBundle') }}</a> <br />
+            {% endfor %}
         </div>
+        <p>
+            {% if  app.user %}
+                {% for row in app.user %}
+                <p>{{row}}</p>
+                {% endfor %}
+            {% endif %}
+
+        </p>
 {% endblock %}

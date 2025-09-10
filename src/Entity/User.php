@@ -36,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $google = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -125,6 +128,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getGoogle(): ?string
+    {
+        return $this->google;
+    }
+
+    public function setGoogle(?string $google): static
+    {
+        $this->google = $google;
 
         return $this;
     }
