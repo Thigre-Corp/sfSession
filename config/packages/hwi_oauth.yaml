@@ -7,3 +7,7 @@ hwi_oauth:
             client_id:           203327411458-c37nhh0q28bcf1plooa97rajrskhoaq1.apps.googleusercontent.com #'%env(GOOGLE_CLIENT_ID)'
             client_secret:       '%env(GOOGLE_CLIENT_SECRET)%'
             scope:               "email profile"
+    connect:
+        account_connector: App\Security\OAuthConnector
+        registration_form: App\Form\RegistrationFormType
+        registration_form_handler: App\Security\FormHandler

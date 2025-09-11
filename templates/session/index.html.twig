@@ -196,10 +196,11 @@
         </tbody>
     </table>
 {% endif %}  
-{% if auth %}
-    <div class="create">
-        <a href="{{ path('session_new') }}" class="btn btn-success">Créer une session</a>
-    </div>
-{% endif %}
+
+    {% if auth %}
+        <div class="create">
+            <a href="{{ path('session_new') }}" class="btn btn-success">Créer une session</a>
+        </div>
+    {% endif %}
 
 {% endblock %}
