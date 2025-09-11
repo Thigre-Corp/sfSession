@@ -9,7 +9,7 @@ use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Form\RegistrationFormHandlerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final readonly class FormHandler implements RegistrationFormHandlerInterface
+final  class FormHandler implements RegistrationFormHandlerInterface // removed: readonly between final and class  / should have worked on php 8.3
 {
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher

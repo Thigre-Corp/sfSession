@@ -4,7 +4,7 @@
 
 {% block body %}
     <form method="post">
-        {% if error %}
+        {% if error ?? null %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
@@ -16,7 +16,7 @@
 
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="username">Username</label>
-        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
+        <input type="text" {#value="{{ last_username }}"#} name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
         <label for="password">Password</label>
         <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
@@ -50,4 +50,7 @@
             {% endif %}
 
         </p>
+        {% block hwi_oauth_content %}
+        {% endblock %}
+
 {% endblock %}

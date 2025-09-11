@@ -4,9 +4,9 @@ namespace App\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-use Doctrine\ORM\Mapping\PropertyAccessors\PropertyAccessor;
+use Symfony\Component\Security\Core\User\UserInterface;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 
